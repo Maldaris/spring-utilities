@@ -50,6 +50,12 @@ public class SqlStatementLoader {
 		return this.resources.containsKey(resourceName);
 	}
 
+	/**
+	 * Get the string representation of the resource in question
+	 * @param resourceName
+	 * @return values loaded from the file, if the resource exists, otherwise null
+	 */
+	
 	public String get(String resourceName) {
 		final String ret;
 
@@ -62,6 +68,13 @@ public class SqlStatementLoader {
 		return ret;
 	}
 
+	/**
+	 * Loads all .sql files by the path.
+	 * Note: the wildcard "*.sql" is appended automatically, do not include in the path!
+	 * @param path
+	 * @return number of resources loaded
+	 */
+	
 	public int loadStatementsByPattern(String path) {
 		int ret = 0;
 		Resource[] res;

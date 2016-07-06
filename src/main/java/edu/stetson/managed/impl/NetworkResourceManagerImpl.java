@@ -14,7 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.stetson.managed.NetworkResourceManager;
-
+/**
+ * Allows for network-triggered reloads of resources into memory.
+ * Uses JSON objects to communicate, and runs concurrently in a non-blocking
+ * fashion to the main HTTP Server thread.
+ * @author slfitzge
+ *
+ */
 public abstract class NetworkResourceManagerImpl implements
 		NetworkResourceManager {
 

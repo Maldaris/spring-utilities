@@ -23,6 +23,14 @@ import edu.stetson.managed.ManagedResource;
 import edu.stetson.managed.ManagedResourceFactory;
 import edu.stetson.managed.ResourceManager;
 
+/**
+ * Loads, manages, and provides an interface to SQL/Model pairs defined in JSON.
+ * Allows for invocation of the pairs and mapping to Spring Models without the
+ * need for extensive boilerplate.
+ * 
+ * @author slfitzge
+ * 
+ */
 public class SqlModelManager implements ResourceManager {
 
 	private Logger log = LoggerFactory.getLogger(SqlModelManager.class);
@@ -74,6 +82,14 @@ public class SqlModelManager implements ResourceManager {
 		return model;
 	}
 
+	/**
+	 * Calls the SQL associated with the resource name, and loads it into the
+	 * associated model, generating the class if necessary.
+	 * 
+	 * @param name
+	 * @param jdbcTemplate
+	 * @return the generated object from the model's ResultSetExtractor.
+	 */
 	public Object invoke(String name, JdbcTemplate jdbcTemplate) {
 		ManagedResourcePair<ManagedSql, ManagedModel> pair = this.resources
 				.get(name);
@@ -84,6 +100,15 @@ public class SqlModelManager implements ResourceManager {
 				.getRight().getResultSetExtractor());
 	}
 
+	/**
+	 * Calls the SQL associated with the resource name, and loads it into the
+	 * associated model, generating the class if necessary.
+	 * 
+	 * @param name
+	 * @param args
+	 * @param jdbcTemplate
+	 * @return the generated object from the model's ResultSetExtractor.
+	 */
 	public Object invoke(String name, Object[] args, JdbcTemplate jdbcTemplate) {
 		ManagedResourcePair<ManagedSql, ManagedModel> pair = this.resources
 				.get(name);
@@ -94,8 +119,18 @@ public class SqlModelManager implements ResourceManager {
 				.getRight().getResultSetExtractor());
 	}
 
+	/**
+	 * Clears existing loaded resources, then grabs resources defined by the
+	 * path, and loads them in memory, calling their subsequent update()
+	 * functions.
+	 * 
+	 * @param path
+	 *            Path to search for resources. Relative to the classloader
+	 *            specified by the constructor.
+	 */
 	@Override
 	public void reload(String path) {
+
 		Resource[] res;
 		try {
 			res = this.resolver.getResources(path + "*.json");
@@ -130,6 +165,10 @@ public class SqlModelManager implements ResourceManager {
 		}
 	}
 
+	/**
+	 * Calls .reload(path) using the default path defined by the constructor, or
+	 * by using "./"
+	 */
 	public void reload() {
 		reload(this.defaultPath);
 	}
@@ -150,6 +189,10 @@ public class SqlModelManager implements ResourceManager {
 		this.resolver = new PathMatchingResourcePatternResolver(cl);
 	}
 
+	/**
+	 * Explicitly reloads the resource on the path, by its name. Note: Omit the
+	 * extension as this is appended automatically, to ensure file type safety.
+	 */
 	@Override
 	public void reloadResourceByName(String path, String name) {
 		Resource res;

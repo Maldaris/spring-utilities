@@ -9,10 +9,16 @@ import java.util.Map;
 
 import org.json.JSONArray;
 
-import edu.stetson.springframework.security.userdetails.StetsonUser;
-
 public class Util {
 
+	/**
+	 * Converts a List<Map<String, Object>> into a List<String>.
+	 * Useful with JDBC when querying for a single column with many rows.
+	 * @param arg
+	 * @param field
+	 * @return
+	 */
+	
 	public static List<String> listify(List<Map<String, Object>> arg, String field) {
 		List<String> ret = new ArrayList<String>();
 		for (Map<String, Object> m : arg)
@@ -20,6 +26,15 @@ public class Util {
 		return ret;
 	}
 
+	/**
+	 * Converts a List<Map<String, Object>> into a Map<String, Object>
+	 * Useful with JDBC when querying for K,V pairs represented across multiple rows.
+	 * @param arg
+	 * @param k
+	 * @param v
+	 * @return
+	 */
+	
 	public static Map<String, Object> delistify(List<Map<String, Object>> arg,
 			String k, String v) {
 		Map<String, Object> ret = new HashMap<String, Object>();
@@ -28,13 +43,13 @@ public class Util {
 		return ret;
 	}
 
-	public static String getIdentifier(StetsonUser user) {
-		if(user.getId() == null){
-			return user.getUsername();
-		}
-		return user.getId();
-	}
-
+	/**
+	 * simple indexOf using Object.equals()
+	 * @param l
+	 * @param t
+	 * @return 0 <= x < l.length or -1 if not found
+	 */
+	
 	public static int indexOf(Object[] l, Object t){
 		for(int i = 0; i < l.length; i++){
 			if(l[i].equals(t))
@@ -42,6 +57,15 @@ public class Util {
 		}
 		return -1;
 	}
+	
+	/**
+	 * finds the index of a object using a function specified by comparatorField in the object list
+	 * ComparatorField must name a function that returns a boolean value.
+	 * @param l List of objects to iterate over
+	 * @param t Object to find the index of
+	 * @param comparatorField
+	 * @return 0 <= x < l.length, or -1 if not found
+	 */
 	
 	public static int indexOf(Object[] l, Object t, String comparatorField) {
 		assert l != null;
@@ -63,6 +87,12 @@ public class Util {
 		return -1;
 	}
 	
+	/**
+	 * Converts a JSONArray object into a native array of objects.
+	 * @param jarr
+	 * @return
+	 */
+	
 	public static Object[] translateJSONArray(JSONArray jarr){
 		Object[] ret = new Object[jarr.length()];
 		for(int i = 0; i < jarr.length(); i++){
@@ -71,7 +101,15 @@ public class Util {
 		return ret;
 	}
 	
+	
+	/**
+	 * Prepends a prefix to a string, and formats using camel casing.
+	 * @param prefix
+	 * @param field 
+	 * @return the combined string
+	 */
 	public static String prependPrefix(String prefix, String field){
+		if(field.length() == 0) return prefix;
 		if(field.length() == 1) 
 			return prefix + Character.toUpperCase(field.charAt(0));
 		return prefix + Character.toUpperCase(field.charAt(0)) + field.substring(1);

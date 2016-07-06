@@ -10,7 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import edu.stetson.managed.JSONValidator;
 import edu.stetson.managed.ManagedResource;
-
+/**
+ * Simple implementation of a SQL Statement container.
+ * @author slfitzge
+ *
+ */
 public class ManagedSql implements ManagedResource {
 
 	private static final String[] validFields = { "statementPath" };

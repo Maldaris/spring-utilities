@@ -4,7 +4,13 @@ import org.json.JSONObject;
 
 import edu.stetson.managed.ManagedResource;
 import edu.stetson.util.Pair;
-
+/**
+ * Pair of Resources, usually a SQL statement and the Model that it populates.
+ * @author slfitzge
+ *
+ * @param <L>
+ * @param <R>
+ */
 public class ManagedResourcePair<L extends ManagedResource, R extends ManagedResource>
 		extends Pair<L, R> implements ManagedResource {
 

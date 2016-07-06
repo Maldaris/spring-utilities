@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -30,6 +28,16 @@ import edu.stetson.managed.JSONValidator;
 import edu.stetson.managed.ManagedObject;
 import edu.stetson.util.Util;
 
+/**
+ * Generates Java Classes as described in JSON input using Javassist, and
+ * provides basic interfaces for accessing the contained object's fields and
+ * methods.
+ * 
+ * @author slfitzge
+ * 
+ * TODO: Better version management & PermGen awareness in update();
+ * 
+ */
 public class ManagedModel extends ManagedModelMapper implements ManagedObject {
 
 	private Logger log = LoggerFactory.getLogger(ManagedModel.class);
@@ -51,6 +59,7 @@ public class ManagedModel extends ManagedModelMapper implements ManagedObject {
 			"org.springframework.dao.DataAccessException",
 			"org.springframework.jdbc.core.ResultSetExtractor" };
 
+	@Deprecated
 	@Override
 	public String[] getFields() {
 		Field[] f = clazz.getDeclaredFields();
@@ -62,6 +71,7 @@ public class ManagedModel extends ManagedModelMapper implements ManagedObject {
 		return ret;
 	}
 
+	@Deprecated
 	@Override
 	public Object getField(String s) {
 		String[] f = this.getFields();
@@ -297,7 +307,8 @@ public class ManagedModel extends ManagedModelMapper implements ManagedObject {
 		}
 
 		if (jo.has("_skipinstance") && jo.getBoolean("_skipinstance"))
-			return; //skip creating an object for use with extensions of managedmodel
+			return; // skip creating an object for use with extensions of
+					// managedmodel
 		try {
 			gen = clazz.getConstructor(new Class<?>[] {}).newInstance(
 					new Object[] {});
