@@ -118,9 +118,11 @@ The following is an example of the JSON file used to create a model.
 	]
 }
 ```
+The following is the corresponding SQL.
 ``` SQL
 
 select
 	id, firstName, lastName
 from userdb
 where id = ?
+```
